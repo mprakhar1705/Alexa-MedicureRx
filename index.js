@@ -121,7 +121,8 @@ const handlers = {
                 }
                 else{
                     //Medicine does not exists
-                   return docClient.put(dynamoParams);
+                    console.log("Put function called");
+                   return docClient.put(dynamoParams).promise();
                     // return dbPut(dynamoParams);
                 }
                    
@@ -183,8 +184,8 @@ const handlers = {
         if(!slots.MedicineName.value){
             const slotToElicit = 'MedicineName';
             const speechOutput = 'What is the name of the medicine?';
-            const repromptSpeech = "Please tell the name of the medicine.";
-            return this.emit(':elicitSlot'. slotToElicit, speechOutput, repromptSpeech);
+            const repromptSpeech = 'Please tell the name of the medicine.';
+            return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
 
         }
 
@@ -210,11 +211,11 @@ const handlers = {
             const medicine = data.Item;
 
             if(medicine){
-                this.emit(':tell',`Expiry date of ${MedicineName} is ${medicine.ExpiryDate}`);
+                this.emit(':tell',`Expiry date of ${medName} is ${medicine.ExpDate}`);
 
             }
             else{
-                this.emit(':tell', `Medicine ${MedicineName} not found!`);
+                this.emit(':tell', `Medicine ${MedName} not found!`);
             }
 
         })
@@ -261,7 +262,7 @@ const handlers = {
         const dynamoParams = {
             TableName: MedicineTable,
             Key: {
-                Name: MedicineName,
+                Name: medName,
                 UserId: userId
             }
         };
@@ -276,7 +277,7 @@ const handlers = {
 
              if(medicine){
                  console.log('Deleting Medicine',data);
-                 return docClient.delete(dynamoParams);
+                 return docClient.delete(dynamoParams).promise();
              }
              const errorMsg = `Medicne ${medName} not found!`;
              this.emit(':tell',errorMsg);
