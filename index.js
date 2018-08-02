@@ -301,12 +301,13 @@ const handlers = {
         this.emit(':ask',speechOutput,reprompt);
     },
 
-    'Amazon.CancelIntent'(){
+    'AMAZON.CancelIntent'(){
         this.emit(':tell','Goodbye!');
     },
 
-    'Amazon.StopIntent'(){
+    'AMAZON.StopIntent'(){
         this.emit(':tell','Goodbye!');
+    
     }
     
 };
